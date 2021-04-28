@@ -40,3 +40,6 @@ sysinfo.txt
 .DS_Store
 .bak
 .BAK
+
+# Extra stuff to ignore in 2020.3.5f1 (?)
+Logs/
