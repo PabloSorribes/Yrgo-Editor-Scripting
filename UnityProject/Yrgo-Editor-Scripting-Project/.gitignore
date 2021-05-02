@@ -43,3 +43,5 @@ sysinfo.txt
 
 # Extra stuff to ignore in 2020.3.5f1 (?)
 Logs/
+UserSettings/
+*/SceneTemplateSettings.json
