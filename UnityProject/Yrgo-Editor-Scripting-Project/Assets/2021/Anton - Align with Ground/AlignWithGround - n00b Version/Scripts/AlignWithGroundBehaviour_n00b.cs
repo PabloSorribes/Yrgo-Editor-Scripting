@@ -4,36 +4,32 @@ using UnityEngine;
 
 public class AlignWithGroundBehaviour_n00b : MonoBehaviour
 {
-	Vector3[] locations;
-
-	public void DropChildObjects()
+	public void DropChildObjects(Transform parentTransform = null)
 	{
-		locations = new Vector3[transform.childCount];
-		int i = 0;
-		foreach (Transform child in transform)
+		if (parentTransform == null)
+			parentTransform = this.transform;
+
+		foreach (Transform child in parentTransform)
 		{
-			locations[i] = child.transform.position;
+#if UNITY_EDITOR
+			UnityEditor.Undo.RecordObject(child, $"Align With Ground: Ground Object '{child.name}'");
+#endif
 			Ground(child);
-			i++;
 		}
+	}
+
+	public void Redo()
+	{
+#if UNITY_EDITOR
+		UnityEditor.Undo.PerformRedo();
+#endif
 	}
 
 	public void Undo()
 	{
-		if (locations != null)
-		{
-			int i = 0;
-			foreach (Transform child in transform)
-			{
-				child.transform.position = locations[i];
-				i++;
-			}
-			locations = null;
-		}
-		else
-		{
-			Debug.Log("Nothing to undo");
-		}
+#if UNITY_EDITOR
+		UnityEditor.Undo.PerformUndo();
+#endif
 	}
 
 	private void Ground(Transform child)

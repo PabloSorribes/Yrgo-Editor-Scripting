@@ -19,5 +19,10 @@ public class AlignWithGroundEditor_n00b : Editor
 		{
 			script.Undo();
 		}
+
+		if (GUILayout.Button("Redo Ground"))
+		{
+			script.Redo();
+		}
 	}
 }
