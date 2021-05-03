@@ -46,9 +46,11 @@ MonoBehaviour:
   backgroundPrefab: {fileID: 3733687753701510615, guid: d7003dd513a2bf148a05c8d94d642cc2, type: 3}
   color: {r: 1, g: 1, b: 1, a: 1}
   sprites:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
+  - {fileID: 21300000, guid: eb47c5d2bceae7b48bbb3b4e7270c770, type: 3}
+  - {fileID: 21300000, guid: cba141850b7b0f84795523a2553a7176, type: 3}
+  - {fileID: 21300000, guid: be3537204a829674692a8d25a2f31f22, type: 3}
+  - {fileID: 21300000, guid: e4aea099b0278c846937e3b3a2262ed3, type: 3}
+  - {fileID: 21300000, guid: 4d1c3a71a40fad54a81dfee1f0d36eb7, type: 3}
   xRange: 8
   yRange: 12
   backgroundObjects: 3
