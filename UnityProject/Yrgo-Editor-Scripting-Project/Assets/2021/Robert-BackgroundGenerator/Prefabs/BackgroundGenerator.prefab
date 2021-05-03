@@ -54,4 +54,4 @@ MonoBehaviour:
   xRange: 8
   yRange: 12
   backgroundObjects: 3
-  maxScale: 3
+  maxScale: 1.25
