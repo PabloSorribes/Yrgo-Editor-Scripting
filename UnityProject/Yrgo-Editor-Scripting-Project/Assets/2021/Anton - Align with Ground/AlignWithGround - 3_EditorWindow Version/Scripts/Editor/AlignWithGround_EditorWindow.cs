@@ -1,10 +1,10 @@
 using UnityEditor;
 using UnityEngine;
 
-public class AlignWithGround_Window : EditorWindow
+public class AlignWithGround_EditorWindow : EditorWindow
 {
 	private const string menuItemPath = "Examples/" + myWindowTitle;
-	private const string myWindowTitle = "AlignWithGround_Window";
+	private const string myWindowTitle = "AlignWithGround_EditorWindow";
 
 	public Transform[] objectsToGround = null;
 
@@ -15,7 +15,7 @@ public class AlignWithGround_Window : EditorWindow
 	public static void SetupWindow()
 	{
 		//Instantiate the window and set its size.
-		var window = GetWindow<AlignWithGround_Window>(utility: false, title: myWindowTitle, focus: true);
+		var window = GetWindow<AlignWithGround_EditorWindow>(utility: false, title: myWindowTitle, focus: true);
 		window.minSize = new Vector2(400, 175);
 		window.maxSize = new Vector2(window.minSize.x + 10, window.minSize.y + 10);
 	}
@@ -33,7 +33,7 @@ public class AlignWithGround_Window : EditorWindow
 
 		// --- DRAW YOUR BUTTONS AND PERFORM YOUR CUSTOM ACTION --- //
 		//Draw the Ground Object Button
-		if (GUILayout.Button("Ground Object"))
+		if (GUILayout.Button($"Ground {Selection.transforms.Length} Objects"))
 		{
 			// - Record an Undo-step for each selected object. Unity will combine them into one big Undo-step later on.
 			// - Run the function for sending each child to the ground.
