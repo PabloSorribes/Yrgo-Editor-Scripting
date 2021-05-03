@@ -3,13 +3,8 @@ using UnityEngine;
 
 public class AlignWithGround_EditorWindow : EditorWindow
 {
-	private const string menuItemPath = "Examples/" + myWindowTitle;
+	private const string menuItemPath = "YRGO/Part 03/" + myWindowTitle;
 	private const string myWindowTitle = "AlignWithGround_EditorWindow";
-
-	public Transform[] objectsToGround = null;
-
-	private SerializedObject windowSerializedObject = null;
-	private SerializedProperty objectsToGroundProp = null;
 
 	[MenuItem(menuItemPath)]
 	public static void SetupWindow()
@@ -20,17 +15,8 @@ public class AlignWithGround_EditorWindow : EditorWindow
 		window.maxSize = new Vector2(window.minSize.x + 10, window.minSize.y + 10);
 	}
 
-	private void OnEnable()
-	{
-		windowSerializedObject = new SerializedObject(this);
-		objectsToGroundProp = windowSerializedObject.FindProperty(nameof(objectsToGround));
-	}
-
-
 	public void OnGUI()
 	{
-		windowSerializedObject.Update();
-
 		// --- DRAW YOUR BUTTONS AND PERFORM YOUR CUSTOM ACTION --- //
 		//Draw the Ground Object Button
 		if (GUILayout.Button($"Ground {Selection.transforms.Length} Objects"))
@@ -60,8 +46,6 @@ public class AlignWithGround_EditorWindow : EditorWindow
 		{
 			Undo.PerformRedo();
 		}
-
-		windowSerializedObject.ApplyModifiedProperties();
 	}
 
 	/// <summary>

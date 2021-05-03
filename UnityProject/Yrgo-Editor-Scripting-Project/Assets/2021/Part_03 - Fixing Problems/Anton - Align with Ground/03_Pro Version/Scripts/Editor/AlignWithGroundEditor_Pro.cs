@@ -9,21 +9,21 @@ public class AlignWithGroundEditor_Pro : Editor
 	{
 		// --- TWO WAYS OF DRAWING THE DEFAULT INSPECTOR --- //
 
-		//1: Calling the base-function that you're overriding. 
-		//This will probably 
+		// 1: Calling the base-function that you're overriding. 
+		// This will probably also call serializedObject.Update() for you
 		base.OnInspectorGUI();
 
-		//2: Calling "DrawDefaultInspector()", which seems to do the same thing. 
-		//DrawDefaultInspector();
+		// 2: Calling "DrawDefaultInspector()", which seems to do the same thing. 
+		// DrawDefaultInspector();
 
 		// --- GET A REFERENCE TO YOUR BEHAVIOUR-SCRIPT --- //
-		//Cast the built in "target"-variable to your script type (ie. the Type you're doing a custom inspector for).
-		//Save it in a variable that you can use to get its children from etc.
+		// Cast the built in "target"-variable to your script type (ie. the Type you're doing a custom inspector for).
+		// Save it in a variable that you can use to get its children from etc.
 		AlignWithGroundBehaviour_Pro script = (AlignWithGroundBehaviour_Pro)target;
 
 
-		// --- DRAW YOUR BUTTONS AND PERFORM YOUR CUSTOM ACTION --- //
-		//Draw the Ground Object Button
+		// --- DRAW YOUR BUTTONS AND PERFORM YOUR CUSTOM ACTION --- // 
+		// Draw the Ground Object Button
 		if (GUILayout.Button("Ground Object"))
 		{
 			// - Access the children of your Custom Inspector's gameObject.
@@ -37,16 +37,16 @@ public class AlignWithGroundEditor_Pro : Editor
 			}
 		}
 
-		//GUILayout has a "Space"-function in which you can specify the space yourself.
+		// GUILayout has a "Space"-function in which you can specify the space yourself.
 		GUILayout.Space(20f);
 
-		//Showcasing that you can call Undo/Redo yourself in Editor Code, if you like.
+		// Showcasing that you can call Undo/Redo yourself in Editor Code, if you like.
 		if (GUILayout.Button("Perform Undo"))
 		{
 			Undo.PerformUndo();
 		}
 
-		//EditorGUILayout ALSO has a "Space"-function but here you CANNOT specify the space yourself (lol).
+		// EditorGUILayout ALSO has a "Space"-function but here you CANNOT specify the space yourself (lol).
 		EditorGUILayout.Space();
 
 		if (GUILayout.Button("Perform Redo"))
