@@ -9,8 +9,6 @@ public class BackgroundGeneratorEditor : Editor
 		DrawDefaultInspector();
 		BackgroundGenerator myScript = (BackgroundGenerator)target;
 
-		//TODO: Add undo functionality
-
 		if (GUILayout.Button("Generate"))
 		{
 			myScript.Generate();
