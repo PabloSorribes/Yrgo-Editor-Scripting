@@ -24,6 +24,9 @@ public class BackgroundGenerator : MonoBehaviour
 		for (int i = 0; i < backgroundObjects; i++)
 		{
 			var newBG = Instantiate(backgroundPrefab, transform);
+#if UNITY_EDITOR
+			UnityEditor.Undo.RegisterCreatedObjectUndo(newBG, "Generate Background: instantiate obj");
+#endif
 			var spriteRenderer = newBG.GetComponentInChildren<SpriteRenderer>();
 			spriteRenderer.sprite = sprites[Random.Range(0, sprites.Length)];
 			spriteRenderer.color = color;
@@ -50,7 +53,11 @@ public class BackgroundGenerator : MonoBehaviour
 	{
 		foreach (Transform child in transform)
 		{
+#if UNITY_EDITOR
+			UnityEditor.Undo.DestroyObjectImmediate(child.gameObject);
+#else
 			DestroyImmediate(child.gameObject);
+#endif
 		}
 		if (transform.childCount > 0)
 		{
