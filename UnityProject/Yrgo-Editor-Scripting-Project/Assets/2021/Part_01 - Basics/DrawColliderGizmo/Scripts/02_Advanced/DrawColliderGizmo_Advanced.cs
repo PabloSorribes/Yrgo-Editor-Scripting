@@ -102,6 +102,7 @@ namespace Sonigon
 
 				if (cachedCollider is CapsuleCollider capsuleCollider)
 				{
+					// TODO @Paalo: Somehow scale the debugMesh to be as big as the capsuleCollider.
 					Mesh debugMesh = SonigonPrimitiveHelper.GetPrimitiveMesh(PrimitiveType.Capsule);
 					Gizmos.DrawMesh(debugMesh);
 					Gizmos.DrawWireMesh(debugMesh);
