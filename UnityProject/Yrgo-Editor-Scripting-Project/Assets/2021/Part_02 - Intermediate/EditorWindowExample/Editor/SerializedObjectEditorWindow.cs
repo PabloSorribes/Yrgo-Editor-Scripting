@@ -59,7 +59,7 @@ public class SerializedObjectEditorWindow : EditorWindow
 		EditorGUILayout.PropertyField(boolProp);
 		EditorGUILayout.PropertyField(gameObjectProp);
 
-		// Draw a Float-slider and an Int-slider with a MinMax-values, using automatic layout.
+		// Draw a Float-slider and an Int-slider with MinMax-values, using automatic layout.
 		EditorGUILayout.Slider(property: floatProp, leftValue: -10f, rightValue: 10f);
 		EditorGUILayout.IntSlider(property: intProp, leftValue: -10, rightValue: 10);
 
