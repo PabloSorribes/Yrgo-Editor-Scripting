@@ -343,7 +343,8 @@ namespace Paalo.UnityMiscTools.EditorTools
 			EditorGUILayout.LabelField($"Added '{typeof(T).Name}'-objects: {typeArray?.Length}", EditorStyles.boldLabel);
 
 			//Making a long string with a newline between each element.
-			string arrayObjectNamesString = string.Empty;
+			System.Text.StringBuilder arrayObjectNames = new System.Text.StringBuilder();
+
 			if (typeArray != null)
 			{
 				foreach (var typeObj in typeArray)
@@ -351,9 +352,8 @@ namespace Paalo.UnityMiscTools.EditorTools
 					if (typeObj == null)
 						continue;
 
-					arrayObjectNamesString += $"{typeObj?.name}\n";
+					arrayObjectNames.AppendLine(typeObj?.name);
 				}
-				arrayObjectNamesString.TrimEnd(System.Environment.NewLine.ToCharArray());
 			}
 
 			//Only show TextArea if any elements have been added.
@@ -369,7 +369,7 @@ namespace Paalo.UnityMiscTools.EditorTools
 				float textAreaHeight = textAreaSingleLineHeight * typeArray.Length;
 
 				//Make text area that shows what items the array contains.
-				textAreaString = EditorGUILayout.TextArea(arrayObjectNamesString, GUILayout.Height(textAreaHeight));
+				textAreaString = EditorGUILayout.TextArea(arrayObjectNames.ToString(), GUILayout.Height(textAreaHeight));
 				EditorGUILayout.EndScrollView();
 			}
 
