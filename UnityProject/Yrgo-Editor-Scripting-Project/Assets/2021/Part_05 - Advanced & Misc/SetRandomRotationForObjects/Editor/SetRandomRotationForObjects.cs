@@ -67,9 +67,11 @@ public class SetRandomRotationForObjects : EditorWindow
 		EditorGUILayout.LabelField("Select axises to rotate around");
 		GUILayout.BeginHorizontal(GUI.skin.box);
 		EditorGUIUtility.labelWidth = CalculateLabelWidth(nameof(xRot));
+
 		xRot = EditorGUILayout.Toggle(label: nameof(xRot), xRot);
 		yRot = EditorGUILayout.Toggle(label: nameof(yRot), yRot);
 		zRot = EditorGUILayout.Toggle(label: nameof(zRot), zRot);
+
 		EditorGUIUtility.labelWidth = originalLabelWidth;
 		GUILayout.EndHorizontal();
 
