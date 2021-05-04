@@ -3,9 +3,14 @@
 public class ScriptUsingVarWithBasicManualPropertyDrawer : MonoBehaviour
 {
 	public int normalInt1;
-	public int normalInt2;
+	[Space]
 	public BasicManualSerializedClass myManualBasicSerializedClass;
-	public int normalInt3;
-	public int normalInt4;
-	public int normalInt5;
+	[Space]
+	public int normalInt2;
+
+	private void Start()
+	{
+		var myBool = myManualBasicSerializedClass.manualDrawerBoolVariable;
+		var myFloat = myManualBasicSerializedClass.manualDrawerFloatVariable;
+	}
 }

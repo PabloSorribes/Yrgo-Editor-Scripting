@@ -13,10 +13,19 @@ public class SerializedObjectEditorWindow : EditorWindow
 	private bool boolField = false;
 
 	[SerializeField]
+	private GameObject gameObjectField = null;
+
+	[Range(-10, 10)]
+	[SerializeField]
+	private int intField = 0;
+
+	[SerializeField]
 	private Transform[] arrayField = null;
 
 	private SerializedObject windowSerializedObject = null;
 	private SerializedProperty boolProp = null;
+	private SerializedProperty gameObjectProp = null;
+	private SerializedProperty intProp = null;
 	private SerializedProperty arrayProp = null;
 
 	[MenuItem(menuItemPath)]
@@ -33,6 +42,8 @@ public class SerializedObjectEditorWindow : EditorWindow
 	{
 		windowSerializedObject = new SerializedObject(this);
 		boolProp = windowSerializedObject.FindProperty(nameof(boolField));
+		gameObjectProp = windowSerializedObject.FindProperty(nameof(gameObjectField));
+		intProp = windowSerializedObject.FindProperty(nameof(intField));
 		arrayProp = windowSerializedObject.FindProperty(nameof(arrayField));
 	}
 
@@ -43,6 +54,8 @@ public class SerializedObjectEditorWindow : EditorWindow
 
 		// Draw the bool and array with automatic layout.
 		EditorGUILayout.PropertyField(boolProp);
+		EditorGUILayout.PropertyField(gameObjectProp);
+		EditorGUILayout.PropertyField(intProp);
 		EditorGUILayout.PropertyField(arrayProp);
 
 		// This change will show up as "Undo Inspector" and "Redo Inspector" in the "Edit"-menu.

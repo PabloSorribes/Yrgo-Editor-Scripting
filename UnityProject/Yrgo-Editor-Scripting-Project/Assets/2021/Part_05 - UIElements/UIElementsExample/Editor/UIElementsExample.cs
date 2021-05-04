@@ -23,8 +23,7 @@ public class UIElementsExampleWindow : EditorWindow
 		UnityEngine.UIElements.Toggle hideSliderBool = new Toggle("Hide Slider!");
 		root.Add(hideSliderBool);
 
-		var label = new Label();
-		label.text = 0.ToString();
+		var label = new Label(0.ToString());
 		root.Add(label);
 
 		SliderInt slider = new SliderInt();
@@ -50,6 +49,7 @@ public class UIElementsExampleWindow : EditorWindow
 
 
 		// Or, once you're done with this element. Make it go away.
+		//Button removeSliderButton = new Button(Hej);
 		Button removeSliderButton = new Button(() => slider.RemoveFromHierarchy());
 		removeSliderButton.text = "Remove Slider?";
 		root.Add(removeSliderButton);
@@ -58,5 +58,10 @@ public class UIElementsExampleWindow : EditorWindow
 		Button addSliderButton = new Button(() => root.Add(slider));
 		addSliderButton.text = "Add Slider?";
 		root.Add(addSliderButton);
+	}
+
+	private void Hej()
+	{
+		UnityEngine.Debug.Log($"Hej!");
 	}
 }

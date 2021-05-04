@@ -50,8 +50,13 @@ public class BasicManualPropertyDrawer : PropertyDrawer
 		var boolPropLabel = new GUIContent(text: "Custom Bool Name", tooltip: "This bool's name will be this, regardless what the code in BasicSerializedClass says.");
 
 		//Draw the properties, with custom labels
-		EditorGUI.PropertyField(position: floatPropRect, property: floatProp, label: floatPropLabel);
 		EditorGUI.PropertyField(position: boolPropRect, property: boolProp, label: boolPropLabel);
+
+		if (boolProp.boolValue)
+		{
+			EditorGUI.PropertyField(position: floatPropRect, property: floatProp, label: floatPropLabel);
+		}
+
 
 		//Allow prefab logic and Undo/Redo of the values for the property.
 		EditorGUI.EndProperty();
