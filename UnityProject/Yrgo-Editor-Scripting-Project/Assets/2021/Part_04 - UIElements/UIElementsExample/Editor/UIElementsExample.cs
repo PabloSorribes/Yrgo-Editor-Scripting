@@ -3,7 +3,7 @@ using UnityEngine.UIElements;
 
 public class UIElementsExampleWindow : EditorWindow
 {
-	[MenuItem("YRGO/Part 05/UIElements Example")]
+	[MenuItem("YRGO/Part 04/UIElements Example")]
 	static void UIElementsExampleWindowMenuItem()
 	{
 		var window = EditorWindow.GetWindow<UIElementsExampleWindow>();

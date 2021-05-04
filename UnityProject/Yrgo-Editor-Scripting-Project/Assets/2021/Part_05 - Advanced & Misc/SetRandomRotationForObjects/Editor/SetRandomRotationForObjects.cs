@@ -9,7 +9,7 @@ public class SetRandomRotationForObjects : EditorWindow
 	//#u translates to "shift + r" which has been the keyboard shortcut bound to this window
 	//It can otherwise be found under "Examples/SetRandomRotationForObjects" in the regular row of menus
 	private const string shortcut = " #r";
-	private const string menuPath = "YRGO/Part 04/" + nameof(SetRandomRotationForObjects) + shortcut;
+	private const string menuPath = "YRGO/Part 05/" + nameof(SetRandomRotationForObjects) + shortcut;
 
 	/// <summary>
 	/// Set at construction and used by <see cref="ResetLabelWidth"/> to reset any 
