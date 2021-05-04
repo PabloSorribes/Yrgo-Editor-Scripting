@@ -15,7 +15,8 @@ public class SerializedObjectEditorWindow : EditorWindow
 	[SerializeField]
 	private GameObject gameObjectField = null;
 
-	[Range(-10, 10)]
+	[SerializeField]
+	private float floatField = 0f;
 	[SerializeField]
 	private int intField = 0;
 
@@ -25,6 +26,7 @@ public class SerializedObjectEditorWindow : EditorWindow
 	private SerializedObject windowSerializedObject = null;
 	private SerializedProperty boolProp = null;
 	private SerializedProperty gameObjectProp = null;
+	private SerializedProperty floatProp = null;
 	private SerializedProperty intProp = null;
 	private SerializedProperty arrayProp = null;
 
@@ -33,7 +35,7 @@ public class SerializedObjectEditorWindow : EditorWindow
 	{
 		//Instantiate the window and set its size.
 		var window = GetWindow<SerializedObjectEditorWindow>(utility: false, title: myWindowTitle, focus: true);
-		window.minSize = new Vector2(400, 175);
+		window.minSize = new Vector2(400, 200);
 		window.maxSize = new Vector2(window.minSize.x + 10, window.minSize.y + 10);
 	}
 
@@ -43,6 +45,7 @@ public class SerializedObjectEditorWindow : EditorWindow
 		windowSerializedObject = new SerializedObject(this);
 		boolProp = windowSerializedObject.FindProperty(nameof(boolField));
 		gameObjectProp = windowSerializedObject.FindProperty(nameof(gameObjectField));
+		floatProp = windowSerializedObject.FindProperty(nameof(floatField));
 		intProp = windowSerializedObject.FindProperty(nameof(intField));
 		arrayProp = windowSerializedObject.FindProperty(nameof(arrayField));
 	}
@@ -52,10 +55,15 @@ public class SerializedObjectEditorWindow : EditorWindow
 		// Always run serializedObject.Update() at the start of a GUI update 
 		windowSerializedObject.Update();
 
-		// Draw the bool and array with automatic layout.
+		// Draw the bool and Object field with automatic layout.
 		EditorGUILayout.PropertyField(boolProp);
 		EditorGUILayout.PropertyField(gameObjectProp);
-		EditorGUILayout.PropertyField(intProp);
+
+		// Draw a Float-slider and an Int-slider with a MinMax-values, using automatic layout.
+		EditorGUILayout.Slider(property: floatProp, leftValue: -10f, rightValue: 10f);
+		EditorGUILayout.IntSlider(property: intProp, leftValue: -10, rightValue: 10);
+
+		// Draw the array with automatic layout.
 		EditorGUILayout.PropertyField(arrayProp);
 
 		// This change will show up as "Undo Inspector" and "Redo Inspector" in the "Edit"-menu.
