@@ -2,8 +2,8 @@
 using UnityEngine;
 
 /// <summary>
-/// "Automatic" in that we calculate the amount of visible/serialized fields in the class, and change the property's height depending on that.
-/// We still need to write the GUI-code for each property tho.
+/// "Automatic" in that we calculate the amount of visible/serialized fields in the class and change the property's height depending on that.
+/// We still need to write the GUI-code for each property tho, which is a pain.
 /// </summary>
 [CustomPropertyDrawer(typeof(AutomaticBasicSerializedClass))]
 public class AutomaticPropertyDrawer : PropertyDrawer
