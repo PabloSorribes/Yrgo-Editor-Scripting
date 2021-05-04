@@ -7,7 +7,7 @@ using UnityEngine;
 
 public class CreateNewScriptFromCustomTemplate
 {
-	private static readonly string pathToYourScriptTemplate = "com.paalo.unity-misc-tools/Editor/Create Scripts from own Template/ScriptTemplates/PaaloScriptTemplate.cs.txt";
+	private static readonly string pathToYourScriptTemplate = "Paalo_FreeGoodies/Editor/Create Scripts from own Template/ScriptTemplates/PaaloScriptTemplate.cs.txt";
 
 	[MenuItem(itemName: "Assets/Create/Paalo/Create New Script from Custom Template", isValidateFunction: false, priority: 51)]
 	public static void CreateScriptFromTemplate()
