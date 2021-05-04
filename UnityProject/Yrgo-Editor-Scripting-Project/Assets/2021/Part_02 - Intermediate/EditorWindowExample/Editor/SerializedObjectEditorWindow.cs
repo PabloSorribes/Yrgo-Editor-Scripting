@@ -35,7 +35,7 @@ public class SerializedObjectEditorWindow : EditorWindow
 	{
 		//Instantiate the window and set its size.
 		var window = GetWindow<SerializedObjectEditorWindow>(utility: false, title: myWindowTitle, focus: true);
-		window.minSize = new Vector2(400, 200);
+		window.minSize = new Vector2(400, 300);
 		window.maxSize = new Vector2(window.minSize.x + 10, window.minSize.y + 10);
 	}
 
@@ -70,6 +70,13 @@ public class SerializedObjectEditorWindow : EditorWindow
 		if (GUILayout.Button("Toggle Bool!"))
 		{
 			boolProp.boolValue = !boolProp.boolValue;
+		}
+
+		// Showcasing that you can overwrite the value of an array too and the UI will update.
+		// Unclear if this handles Undo tho, probably not.
+		if (GUILayout.Button($"Set array to selected transforms ({Selection.transforms.Length})"))
+		{
+			arrayField = Selection.transforms;
 		}
 
 		// Allows undo on the editor window's properties. 
