@@ -7,7 +7,7 @@ public class UIElementsExampleWindow : EditorWindow
 	static void UIElementsExampleWindowMenuItem()
 	{
 		var window = EditorWindow.GetWindow<UIElementsExampleWindow>();
-		window.minSize = new UnityEngine.Vector2(150, 100f);
+		window.minSize = new UnityEngine.Vector2(150, 150f);
 		window.maxSize = new UnityEngine.Vector2(window.minSize.x + 200f, window.minSize.y);
 		window.Show();
 	}
@@ -54,8 +54,9 @@ public class UIElementsExampleWindow : EditorWindow
 		removeSliderButton.text = "Remove Slider?";
 		root.Add(removeSliderButton);
 
-
-		// Or, once you're done with this element. Make it go away.
-		//slider.RemoveFromHierarchy();
+		// Add slider again
+		Button addSliderButton = new Button(() => root.Add(slider));
+		addSliderButton.text = "Add Slider?";
+		root.Add(addSliderButton);
 	}
 }
