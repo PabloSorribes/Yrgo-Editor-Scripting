@@ -323,6 +323,9 @@ namespace Paalo.UnityMiscTools.EditorTools
 
 		#endregion Draw Drag And Drop Area
 
+		/// <summary>
+		/// To make a Header label wherever you want, like the one that's made when using the <see cref="HeaderAttribute"/>.
+		/// </summary>
 		public static void DrawHeader(string headerText, params GUILayoutOption[] layoutOptions)
 		{
 			EditorGUILayout.LabelField(headerText, EditorStyles.boldLabel, layoutOptions);
