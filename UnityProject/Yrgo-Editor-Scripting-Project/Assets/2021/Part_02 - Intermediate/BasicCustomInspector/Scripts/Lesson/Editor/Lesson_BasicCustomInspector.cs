@@ -15,7 +15,7 @@ public class Lesson_BasicCustomInspector : Editor
 		base.OnInspectorGUI();
 
 		//Do your editor stuff here:
-
+		// TODO: Find string property & display it via "EditorGUILayout.PropertyField()"
 
 		//Apply the occurred changes with this line (allow automatic undo/redo)
 		serializedObject.ApplyModifiedProperties();
