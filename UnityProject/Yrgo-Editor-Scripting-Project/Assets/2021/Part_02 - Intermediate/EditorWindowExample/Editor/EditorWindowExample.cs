@@ -49,6 +49,7 @@ public class EditorWindowExample : EditorWindow
 		//Debug.Log("Timer: " + timer);
 	}
 
+	// Needs to be called from OnGUI, else it won't work.
 	private void HandleKeyboardInput()
 	{
 		//If we press escape while the Window is focused, we Close it.
