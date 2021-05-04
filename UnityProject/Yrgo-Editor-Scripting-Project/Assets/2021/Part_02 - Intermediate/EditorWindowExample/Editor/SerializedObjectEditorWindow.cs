@@ -1,3 +1,4 @@
+using System.Linq;
 using UnityEditor;
 using UnityEngine;
 
@@ -73,10 +74,12 @@ public class SerializedObjectEditorWindow : EditorWindow
 		}
 
 		// Showcasing that you can overwrite the value of an array too and the UI will update.
+		// Also a bit of System.Linq magic to create an array of transforms based on the selected gameObjects.
 		// Unclear if this handles Undo tho, probably not.
-		if (GUILayout.Button($"Set array to selected transforms ({Selection.transforms.Length})"))
+		if (GUILayout.Button($"Set array to selected transforms ({Selection.gameObjects.Length})"))
 		{
-			arrayField = Selection.transforms;
+			Transform[] transforms = Selection.gameObjects.Select(x => x.transform).ToArray();
+			arrayField = transforms;
 		}
 
 		// Allows undo on the editor window's properties. 
