@@ -46,7 +46,7 @@ public class EditorWindowExample : EditorWindow
 	{
 		timer += DeltaTime;
 		lastTime = Time.realtimeSinceStartup;
-		//Debug.Log("Timer: " + timer);
+		//Debug.Log($"Timer: {timer}");
 	}
 
 	// Needs to be called from OnGUI, else it won't work.
