@@ -5,6 +5,8 @@
 /// </summary>
 public class DrawColliderGizmo_Basic : MonoBehaviour
 {
+	[Range(0f, 1f)]
+	public float alpha = 0.3f;
 	public Color defaultGizmoColor = Color.cyan;
 	public Color selectedGizmoColor = Color.yellow;
 
@@ -24,7 +26,7 @@ public class DrawColliderGizmo_Basic : MonoBehaviour
 		Gizmos.DrawWireCube(transform.position + boxCollider.center, boxCollider.size);
 
 		//Draws the sides/insides of the BoxCollider, with a tint to the original color.
-		color.a = 0.3f;
+		color.a = alpha;
 		Gizmos.color = color;
 		Gizmos.DrawCube(transform.position + boxCollider.center, boxCollider.size);
 	}
