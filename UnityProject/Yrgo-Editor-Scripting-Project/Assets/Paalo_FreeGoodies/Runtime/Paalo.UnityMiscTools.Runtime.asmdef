@@ -1,0 +1,15 @@
+{
+    "name": "Paalo.UnityMiscTools.Runtime",
+    "references": [
+        "GUID:20d6ff5aeede8824594f85bbf16791a3"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
