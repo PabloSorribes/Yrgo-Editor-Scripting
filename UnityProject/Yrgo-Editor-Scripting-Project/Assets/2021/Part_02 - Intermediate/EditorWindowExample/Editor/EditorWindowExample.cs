@@ -67,6 +67,24 @@ public class EditorWindowExample : EditorWindow
 		//Start the main vertical box, which will give the tool a coherent background.
 		EditorGUILayout.BeginVertical(GUI.skin.box);
 
+		GUI_DrawStringField();
+		GUI_DrawObjectField();
+		GUI_DrawIntSlider();
+
+		//Add some space between the rest of the controls and the bool.
+		EditorGUILayout.Space();
+		GUI_DrawBoolAndFirstButton();
+
+		//Add some space between the bool-button group and the last button.
+		EditorGUILayout.Space();
+		GUI_DrawSecondButton();
+
+		//Finally, end the main vertical box, which gave the coherent background.
+		EditorGUILayout.EndVertical();
+	}
+
+	private void GUI_DrawStringField()
+	{
 		//--- STRING ---//
 		//First we create the label-text with a tooltip.
 		//Then we create a text field, supply it with the label we just created and 
@@ -75,8 +93,10 @@ public class EditorWindowExample : EditorWindow
 		GUIContent myStringLabel = new GUIContent(text: "My String: ", tooltip: "What's your string all about?");
 		myString = EditorGUILayout.TextField(myStringLabel, myString);
 		EditorGUILayout.EndHorizontal();
+	}
 
-
+	private void GUI_DrawObjectField()
+	{
 		//--- OBJECT FIELD ---//
 		//We also use "CalculateLabelWidth()" to adapt the right hand side of the field to the length of our label's text-field (normally the variable name).
 		//Try commenting out that line and see what happens.
@@ -86,8 +106,10 @@ public class EditorWindowExample : EditorWindow
 		myGameObjectField = (GameObject)EditorGUILayout.ObjectField(myGameObjectFieldLabel, myGameObjectField, typeof(GameObject), allowSceneObjects: true);
 		ResetLabelWidth();
 		EditorGUILayout.EndHorizontal();
+	}
 
-
+	private void GUI_DrawIntSlider()
+	{
 		//--- INT SLIDER ---//
 		//Here we use "nameof()" to avoid having to update the variable-text name in case we rename the actual variable.
 		//See how the layout changes with or without the "CalculateLabelWidth(myIntLabel)"-line and the "ResetLabelWidth()"-line.
@@ -97,12 +119,10 @@ public class EditorWindowExample : EditorWindow
 		myIntSlider = EditorGUILayout.IntSlider(label: myIntSliderLabel, value: myIntSlider, leftValue: -10, rightValue: 10);
 		//ResetLabelWidth();
 		EditorGUILayout.EndHorizontal();
+	}
 
-
-		//Add some space between the rest of the controls and the bool.
-		EditorGUILayout.Space();
-
-
+	private void GUI_DrawBoolAndFirstButton()
+	{
 		//--- BOOL & FIRST BUTTON ---//
 		//Here we begin another Vertical group inside the new Horizontal group 
 		//to section off the bool and the first button from the rest.
@@ -119,7 +139,6 @@ public class EditorWindowExample : EditorWindow
 		EditorGUIUtility.labelWidth = CalculateLabelWidth(myBoolLabel);
 		myBool = EditorGUILayout.Toggle(myBoolLabel, myBool);
 		ResetLabelWidth();
-
 
 		//-- MAKE FIRST BUTTON --//
 		//Display a button to perform an action with.
@@ -154,12 +173,10 @@ public class EditorWindowExample : EditorWindow
 		EditorGUILayout.EndVertical();
 		EditorGUILayout.EndHorizontal();
 		GUI.backgroundColor = originalBackgroundColor;
+	}
 
-
-		//Add some space between the bool-button group and the last button.
-		EditorGUILayout.Space();
-
-
+	private void GUI_DrawSecondButton()
+	{
 		//--- SECOND BUTTON ---//
 		//How to make a Popup-dialogue with two options.
 		//"EditorUtility.DisplayDialog" returns a bool depending on which button was clicked. 
@@ -179,9 +196,6 @@ public class EditorWindowExample : EditorWindow
 				Debug.Log("Popup Window: Cancel-button was clicked.");
 			}
 		}
-
-		//Finally, end the main vertical box, which gave the coherent background.
-		EditorGUILayout.EndVertical();
 	}
 
 
