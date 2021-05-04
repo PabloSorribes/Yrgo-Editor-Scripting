@@ -8,7 +8,10 @@ public class ScriptableWizard_SelectAllWithTag : ScriptableWizard
 	[MenuItem("YRGO/Part 01/ScriptableWizard - Select All With Tag...")]
 	static void SelectAllWithTagWizard()
 	{
-		ScriptableWizard.DisplayWizard<ScriptableWizard_SelectAllWithTag>("Select All With Tag...", "Make Selection", "Some Other Button");
+		ScriptableWizard.DisplayWizard<ScriptableWizard_SelectAllWithTag>(
+			title: "Select All With Tag...", 
+			createButtonName: "Make Selection", 
+			otherButtonName: "Some Other Button");
 	}
 
 	void OnWizardCreate()
