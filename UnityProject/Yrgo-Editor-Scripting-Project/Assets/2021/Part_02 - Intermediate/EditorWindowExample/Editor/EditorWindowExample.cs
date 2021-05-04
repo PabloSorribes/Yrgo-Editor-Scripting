@@ -3,8 +3,8 @@ using UnityEngine;
 
 public class EditorWindowExample : EditorWindow
 {
-	private const string menuItemPath = "Examples/My Editor Window Example";
-	private static readonly string myWindowTitle = "My Editor Window Example";
+	private const string menuItemPath = "YRGO/Part 02/" + myWindowTitle;
+	private const string myWindowTitle = "My Editor Window Example";
 
 	public string myString = "My awesome string";
 	public GameObject myGameObjectField = null;

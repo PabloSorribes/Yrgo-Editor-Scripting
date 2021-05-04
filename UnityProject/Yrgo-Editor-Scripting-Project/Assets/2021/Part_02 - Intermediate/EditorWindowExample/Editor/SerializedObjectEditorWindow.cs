@@ -3,16 +3,20 @@ using UnityEngine;
 
 public class SerializedObjectEditorWindow : EditorWindow
 {
-	private const string menuItemPath = "Examples/" + myWindowTitle;
+	private const string menuItemPath = "YRGO/Part 02/" + myWindowTitle;
 	private const string myWindowTitle = "SerializedObjectEditorWindow";
 
 	/// <summary>
 	/// Needs to be serialized/public, else we get errors when drawing the UI.
 	/// </summary>
 	[SerializeField]
+	private bool boolField = false;
+
+	[SerializeField]
 	private Transform[] arrayField = null;
 
 	private SerializedObject windowSerializedObject = null;
+	private SerializedProperty boolProp = null;
 	private SerializedProperty arrayProp = null;
 
 	[MenuItem(menuItemPath)]
@@ -28,6 +32,7 @@ public class SerializedObjectEditorWindow : EditorWindow
 	private void OnEnable()
 	{
 		windowSerializedObject = new SerializedObject(this);
+		boolProp = windowSerializedObject.FindProperty(nameof(boolField));
 		arrayProp = windowSerializedObject.FindProperty(nameof(arrayField));
 	}
 
@@ -36,8 +41,15 @@ public class SerializedObjectEditorWindow : EditorWindow
 		// Always run serializedObject.Update() at the start of a GUI update 
 		windowSerializedObject.Update();
 
-		// Draw the array, no biggie
+		// Draw the bool and array with automatic layout.
+		EditorGUILayout.PropertyField(boolProp);
 		EditorGUILayout.PropertyField(arrayProp);
+
+		// This change will show up as "Undo Inspector" and "Redo Inspector" in the "Edit"-menu.
+		if (GUILayout.Button("Toggle Bool!"))
+		{
+			boolProp.boolValue = !boolProp.boolValue;
+		}
 
 		// Allows undo on the editor window's properties. 
 		// Bear in mind that the GUI may not reflect some changes until the mouse hovers over the window tho.
