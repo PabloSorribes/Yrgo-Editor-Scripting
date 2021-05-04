@@ -28,12 +28,12 @@ public class Cheats
         }
     }
 
-    public static int PlayerLifes
+    public static int PlayerLives
     {
         get
         {
 #if UNITY_EDITOR
-            return EditorPrefs.GetInt("PlayerLifes", 3);
+            return EditorPrefs.GetInt("PlayerLives", 3);
 #else
             return false;
 #endif
@@ -42,7 +42,7 @@ public class Cheats
         set
         {
 #if UNITY_EDITOR
-            EditorPrefs.SetInt("PlayerLifes", value);
+            EditorPrefs.SetInt("PlayerLives", value);
 #endif
         }
     }
