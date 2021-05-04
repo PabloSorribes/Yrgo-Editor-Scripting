@@ -2,9 +2,80 @@
 
 [<img src="https://media1.tenor.com/images/757737201b0c4c0a46bb42bc333a64cb/tenor.gif" alt="01 - Programming Patterns" width="100%">](https://en.wikipedia.org/wiki/GoldenEye)
 
-Lesson by Pablo Sorribes Bernhard - GP17 - [Link to PowerPoint Presentation](https://drive.google.com/open?id=19g0gLdQRyZTzn9pg3W8q0sYI8MSMSUMp)
+Lesson by Pablo Sorribes Bernhard - GP17 - [Link to PowerPoint Presentation](https://drive.google.com/file/d/1oJJfbenNUYuvIdMXONzascSeA3PWbY-e/view?usp=sharing)
 
 > **Note:** *Part of this lesson is still waiting for english translation. Text is Swedish are marked with cursive for now.*
+
+## Table of Contents
+- [06 - Editor Scripting](#06---editor-scripting)
+  - [Table of Contents](#table-of-contents)
+  - [Introduction](#introduction)
+    - [Awesome editor scripting tools](#awesome-editor-scripting-tools)
+  - [Basics](#basics)
+    - [“Editor”-folder namespace](#editor-folder-namespace)
+    - [Menu Items](#menu-items)
+      - [Menu Index Position / Priority](#menu-index-position--priority)
+  - [Custom Editors vs Editor Windows](#custom-editors-vs-editor-windows)
+        - [Custom Editors](#custom-editors)
+        - [Editor Windows](#editor-windows)
+    - [How to: Make your own Custom Inspector (using a Custom Editor)](#how-to-make-your-own-custom-inspector-using-a-custom-editor)
+      - [Prerequisites](#prerequisites)
+      - [Basic Editor Example](#basic-editor-example)
+    - [How to: Make an Editor Window](#how-to-make-an-editor-window)
+      - [Prerequisites](#prerequisites-1)
+      - [Editor Window Example](#editor-window-example)
+  - [Basics: Layout Classes & Labels](#basics-layout-classes--labels)
+    - [Layouting](#layouting)
+    - [Labels](#labels)
+      - [Example: Create a label for a string variable](#example-create-a-label-for-a-string-variable)
+  - [Custom Editors: `target` vs Serialized Object](#custom-editors-target-vs-serialized-object)
+    - [The `target` variable (aka the “old” way)](#the-target-variable-aka-the-old-way)
+    - [Serialized Object (aka the “new” way)](#serialized-object-aka-the-new-way)
+      - [Serialized Property](#serialized-property)
+  - [Undo - The different ways of undoing something](#undo---the-different-ways-of-undoing-something)
+    - [“Normal” Undo](#normal-undo)
+    - [Undo Single Object Instantiation](#undo-single-object-instantiation)
+    - [Object Deletion with Undo](#object-deletion-with-undo)
+    - [BeginChangeCheck() & EndChangeCheck()](#beginchangecheck--endchangecheck)
+    - [EditorUtility.SetDirty](#editorutilitysetdirty)
+  - [UI Elements - The new UI System](#ui-elements---the-new-ui-system)
+- [Nice Classes, Functions and Code Snippets](#nice-classes-functions-and-code-snippets)
+  - [SetRandomRotationForObjects - Editor Window](#setrandomrotationforobjects---editor-window)
+  - [Selection - How to set and get the Selected Objects](#selection---how-to-set-and-get-the-selected-objects)
+  - [Layout tips](#layout-tips)
+    - [Layout tips: Make a clickable Button](#layout-tips-make-a-clickable-button)
+    - [Layout tips: Nice boxes as sectioning elements](#layout-tips-nice-boxes-as-sectioning-elements)
+    - [Layout tips: Format your inspector’s text and styles](#layout-tips-format-your-inspectors-text-and-styles)
+    - [Layout tips: Make labels easily using GUIContent](#layout-tips-make-labels-easily-using-guicontent)
+  - [EditorUtility.DisplayDialog()](#editorutilitydisplaydialog)
+  - [Draw default inspector, but draw some of the elements by yourself](#draw-default-inspector-but-draw-some-of-the-elements-by-yourself)
+  - [Serialized Classes: Use custom classes as variables in other classes](#serialized-classes-use-custom-classes-as-variables-in-other-classes)
+  - [Serialized Classes on Steroids: Custom Property Drawers](#serialized-classes-on-steroids-custom-property-drawers)
+  - [[CanEditMultipleObjects]](#caneditmultipleobjects)
+  - [Gizmos](#gizmos)
+- [Resources, AssetDatabase & FileUtil](#resources-assetdatabase--fileutil)
+  - [AssetPreview.GetAssetPreview(asset: myAsset)](#assetpreviewgetassetpreviewasset-myasset)
+- [Misc Editor Code](#misc-editor-code)
+  - [Capture Keyboard Input in Editor Windows (ie. make shortcuts)](#capture-keyboard-input-in-editor-windows-ie-make-shortcuts)
+  - [UnityEditorInternal.ReorderableList](#unityeditorinternalreorderablelist)
+  - [Translate Screen Mouse Coords to World Coords](#translate-screen-mouse-coords-to-world-coords)
+  - [Saving settings persistently for Editor Scripts](#saving-settings-persistently-for-editor-scripts)
+  - [“typeof()” and “nameof()”](#typeof-and-nameof)
+      - [typeof()](#typeof)
+      - [nameof()](#nameof)
+- [Resources from the Lesson](#resources-from-the-lesson)
+  - [Example Scripts & GIFs used during the Lesson](#example-scripts--gifs-used-during-the-lesson)
+  - [General links for Editor Scripting](#general-links-for-editor-scripting)
+- [Paalo Bonus Goodies](#paalo-bonus-goodies)
+  - [EditorGUIHelper](#editorguihelper)
+  - [GameObjectExtensions](#gameobjectextensions)
+  - [StringExtensions](#stringextensions)
+  - [HelperMethods](#helpermethods)
+  - [Editor Scene Hierarchy Traversal - Scene Traversal API](#editor-scene-hierarchy-traversal---scene-traversal-api)
+  - [SerializedPropertyExtensions](#serializedpropertyextensions)
+- [UI Elements](#ui-elements)
+
+---
 
 ## Introduction
 Editor Scripting is all about extending and improving the editor to make it more useful stuff. Some examples include:
@@ -43,6 +114,8 @@ Here are a few examples of things that can be made with editor scripting:
         - [Create Parent for Selected Objects](https://drive.google.com/open?id=1qcur2YXA-6viADt45dByves564AzrUWC)
         - [Move Selection to New Parent with New Relative Position (Special Paste)](https://drive.google.com/open?id=1T57WTk1w8pobEp-fHLFnV0oVYlp0k8a9)
 
+---
+
 ## Basics
 Ok, let’s go over the basics. What’s needed for writing Editor Code?
 
@@ -75,6 +148,8 @@ private static void FunctionCalledByMenuItem()
     //Do stuff here, like call your Editor Window instance, or execute another method, etc.
 }
 ```
+
+---
 
 ## Custom Editors vs Editor Windows
 
@@ -186,6 +261,7 @@ public class EditorWindowExample_LiveCoding : EditorWindow
 	}
 ```
 
+---
 
 ## Basics: Layout Classes & Labels
 ### Layouting
@@ -229,6 +305,7 @@ private void OnGUI()
 Result:
 [https://drive.google.com/open?id=1-Ge8Ipw7z6G9JJfb0uZlXVkKmmKkmTMp](https://drive.google.com/open?id=1-Ge8Ipw7z6G9JJfb0uZlXVkKmmKkmTMp)
 
+---
 
 ## Custom Editors: `target` vs Serialized Object
 ### The `target` variable (aka the “old” way)
@@ -292,9 +369,11 @@ Debug.Log(propertyInstance.stringValue);
 Debug.Log(propertyInstance.displayName);
 ```
 
+---
+
 ## Undo - The different ways of undoing something
 ### “Normal” Undo
-Innan man gör en ändring på ett/flera objekt så måste man spara undan dem i en variabel:
+//TODO @Paalo: Innan man gör en ändring på ett/flera objekt så måste man spara undan dem i en variabel:
 
 ```C#
 var currentObject = Selection.activeObject;
@@ -351,6 +430,7 @@ The only remaining use (which is used rarely) happens if a non-scene object is m
 
 Unity uses the dirty flag internally to find changed assets that must be saved to disk.
 
+---
 
 ## UI Elements - The new UI System
 In `Unity 2019.1`, Unity introduced the new UI-system called `UI Elements`. It is mostly based on events and actions. As a contrast `IMGUI` (the old system, "Immediate Mode Graphical User Interface") is based upon a GUI-loop which checks values all the time.
@@ -369,9 +449,10 @@ In UIElements, as a retained mode API, the idea is that you build your UI hierar
 See **“UIElementsExample”-script** for a simple UIElements-based Editor Window:
 [https://drive.google.com/open?id=1q9-SB5Kxfuwo_8A6uHfvnNu2-SEdaSH2](https://drive.google.com/open?id=1q9-SB5Kxfuwo_8A6uHfvnNu2-SEdaSH2)
 
+---
 
-## Nice Classes, Functions and Code Snippets
-### SetRandomRotationForObjects - Editor Window
+# Nice Classes, Functions and Code Snippets
+## SetRandomRotationForObjects - Editor Window
 Assign Random Rotation for objects with this simple Editor Wndow-script.
 
 It rotates the chosen objects around one or more axises with X-amount of degrees
@@ -383,7 +464,7 @@ See code file for reference:
 [https://drive.google.com/open?id=1Dj5AwenMfr4Wot9TsF8O_DCQ1H3EUyEh](https://drive.google.com/open?id=1Dj5AwenMfr4Wot9TsF8O_DCQ1H3EUyEh)
 
 
-### Selection - How to set and get the Selected Objects
+## Selection - How to set and get the Selected Objects
 ```C#
 //The selected gameObjects:
 var selectedObjects = Selection.gameObjects;
@@ -398,9 +479,10 @@ var actualUserSelection = Selection.objects;
 //Set the selection to your custom selection.
 Selection.objects = myCustomSelectionArray;
 ```
+---
 
-### Layout tips
-#### Layout tips: Make a clickable Button
+## Layout tips
+### Layout tips: Make a clickable Button
 ```C#
 if (GUILayout.Button("My button text"))
 {
@@ -408,7 +490,7 @@ if (GUILayout.Button("My button text"))
 }
 ```
 
-#### Layout tips: Nice boxes as sectioning elements
+### Layout tips: Nice boxes as sectioning elements
 *För att göra ett gäng boxar som sektionerar av en del av dina tools (grafiskt), använd:*
 
 ```C#
@@ -427,7 +509,7 @@ myString = EditorGUILayout.TextField(myStringLabel, myString);
 EditorGUILayout.EndHorizontal();
 ```
 
-#### Layout tips: Format your inspector’s text and styles
+### Layout tips: Format your inspector’s text and styles
 Check the “EditorStyles”-class. It is usually used together with the functions that create controls (labels, text, etc) in the GUILayout and EditorGUILayout-classes. Eg:
 
 ```C#
@@ -435,7 +517,7 @@ Check the “EditorStyles”-class. It is usually used together with the functio
 GUILayout.Label(“My Bold Label”, EditorStyles.boldLabel);
 ```
 
-#### Layout tips: Make labels easily using GUIContent
+### Layout tips: Make labels easily using GUIContent
 ```C#
 public string myString;
 
@@ -449,7 +531,9 @@ private void OnGUI()
 }
 ```
 
-### EditorUtility.DisplayDialog()
+---
+
+## EditorUtility.DisplayDialog()
 
 Make a simple popup-check for asking the user if they really want to do a specific task (eg. “Do you really want to remove this item?”)
 
@@ -460,8 +544,9 @@ EditorUtility.DisplayDialog(title: "No objects selected!",
     ok: "Ok, I'll select some objects :)");
 return;
 ```
+---
 
-### Draw default inspector, but draw some of the elements by yourself
+## Draw default inspector, but draw some of the elements by yourself
 Use the tag “HideInInspector” above your field:
 
 ```C#
@@ -471,7 +556,7 @@ public int myNormallyDrawnVariable;
 public int myCustomDrawnVariable;
 ```
 
-### Serialized Classes: Use custom classes as variables in other classes
+## Serialized Classes: Use custom classes as variables in other classes
 
 Create a class and add the `[System.Serializeable]`-tag to it. This will make unity draw it in your inspectors.
 
@@ -484,13 +569,15 @@ public class MyClass
 }
 ```
 
-### Serialized Classes on Steroids: Custom Property Drawers
+## Serialized Classes on Steroids: Custom Property Drawers
 Draw your own serialized class in a specific/custom way when it is used by other scripts as a variable. Useful for making variables of a serialized class always appear in the same custom way, without having to write a Custom Editor for each and every script which uses that class as a variable.
 
 See Pablo’s [MinMaxSlider](https://drive.google.com/open?id=1wDx5pI9xPt5haH6G-rpBg1nmVd0-Nmcy) for an extensive and documented way of drawing a custom MinMaxSlider as a Property.
 
+---
 
-### [CanEditMultipleObjects]
+
+## [CanEditMultipleObjects]
 
 `CanEditMultipleObjects` tells Unity that you designed you custom inspector in such a way that when multiple objects of the same type are selected they can all be edited at the same time.
 
@@ -498,8 +585,9 @@ If you use `serializedObject` Unity does this automatically for you. If you are 
 
 The `target` variable only accesses the first component.
 
+---
 
-### Gizmos
+## Gizmos
 
 Draw your own help text and color your triggers for easier use of the Editor when doing Level Design.
 [DrawColliderGizmo script + test scene](https://drive.google.com/open?id=1QgT4FoUCQWHgTDwMln3ZiSwAxy51SVgn )
@@ -535,14 +623,16 @@ private void OnDrawGizmosSelected()
 }
 ```
 
-## Resources, AssetDatabase & FileUtil
+---
+
+# Resources, AssetDatabase & FileUtil
 Useful classes for loading data in different ways:
 *   [Resources](https://docs.unity3d.com/ScriptReference/Resources.html)
 *   [AssetDatabase](https://docs.unity3d.com/ScriptReference/AssetDatabase.html)
 *   [FileUtil](https://docs.unity3d.com/ScriptReference/FileUtil.html)
 
 
-### AssetPreview.GetAssetPreview(asset: myAsset)
+## AssetPreview.GetAssetPreview(asset: myAsset)
 Get a `Texture2D` of the Preview Image that Unity automatically renders in the project, which you then can use to display in other places or Editors.
 
 ```C#
@@ -551,7 +641,11 @@ Texture2D previewImage = AssetPreview.GetAssetPreview(asset: myAsset);
 GUIContent myGUIContentWithImage = new GUIContent(image: previewImage);
 ```
 
-### Capture Keyboard Input in Editor Windows (ie. make shortcuts)
+---
+
+# Misc Editor Code
+
+## Capture Keyboard Input in Editor Windows (ie. make shortcuts)
 
 Run the code for input checks in the `OnGUI()`-function, else it will fail.
 
@@ -572,7 +666,9 @@ private void OnGUI()
 }
 ```
 
-### UnityEditorInternal.ReorderableList
+## UnityEditorInternal.ReorderableList
+
+**MAY NOT BE NEEDED ANYMORE, SINCE ARRAYS ARE REORDERABLE SINCE UNITY 2021.X**
 
 > **WARNING:** Use at your own risk, there is no guarantee that the classes within `UnityEditorInternal` won't change randomly on an update.
 
@@ -586,7 +682,7 @@ See “Editor Scripting for n00bs”-tutorial (36:22-40:00) \
 Also see “PistonE04PatternEditor.cs” in the [referenced project](http://letscodegames.com/ ) for how to set it up.
 
 
-### Translate Screen Mouse Coords to World Coords
+## Translate Screen Mouse Coords to World Coords
 ```C#
 Event e = Event.current;
 Ray r = Camera.current.ScreenPointToRay(new Vector3(e.mousePosition.x, -e.mousePosition.y + Camera.current.pixelHeight));
@@ -596,7 +692,7 @@ Source (“Step 11”):
 [Tutsplus](https://code.tutsplus.com/tutorials/how-to-add-your-own-tools-to-unitys-editor--active-10047)
 
 
-### Saving settings persistently for Editor Scripts
+## Saving settings persistently for Editor Scripts
 ```C#
 //EditorPrefs is the same as PlayerPrefs but it only works in the editor
 //This way you can store variables persistantly even if you close the editor
@@ -617,19 +713,22 @@ Seems to be a replacement for EditorPrefs and PlayerPrefs. If you like, do more 
 
 - [Unity Manual - SettingsProvider](https://docs.unity3d.com/ScriptReference/SettingsProvider.html)
 
+---
 
-### “typeof()” and “nameof()”
+## “typeof()” and “nameof()”
 
-##### typeof()
+#### typeof()
 
 Used when casting etc. In this context it is mostly used for defining the Monobehaviour that a Custom Editor is supposed to look at.
 
-##### nameof()
+#### nameof()
 
 Use variable's and classe's name for your property strings → if you update (ie. rename) the variabelname, the UI will update automatically and you avoid errors. Good while developing and debugging a plugin.
 
-## Resources
-#### Example Scripts & GIFs used during the Lesson
+---
+
+# Resources from the Lesson
+## Example Scripts & GIFs used during the Lesson
 
 
 - [Power Point Presentation](https://drive.google.com/open?id=19g0gLdQRyZTzn9pg3W8q0sYI8MSMSUMp)
@@ -637,7 +736,7 @@ Use variable's and classe's name for your property strings → if you update (ie
 - [GIFs-folder](https://drive.google.com/open?id=1O_KrePs4vI_KyTxNlZlmnkK6ZvgIIyoi)
 
 
-#### General links for Editor Scripting
+## General links for Editor Scripting
 
 - Editor Scripting for n00bs
   *   Video tutorial/talk on how to write your own Gizmos and a bunch of other useful stuff.
@@ -685,11 +784,11 @@ Use variable's and classe's name for your property strings → if you update (ie
 
 ---
 
-### Paalo Bonus Goodies
+# Paalo Bonus Goodies
 Folder with all the Goodies:
 [Google Drive Folder](https://drive.google.com/open?id=1edSI_Yh7CMYIZMRiILdDGDaiKnPZqN-6).
 
-##### EditorGUIHelper
+## EditorGUIHelper
 
 Contains helper methods for common (and tedious) operations when writing IMGUI-code.
 
@@ -697,16 +796,16 @@ Most common ones:
 *   `CalculateLabelWidth()` - Useful for setting bool-toggles (and other controls) right at the end of the label text.
 *   `ResetIndent()` - Useful for when you’ve been messing around with the indentation level. Avoids you having to store the original indentation level somewhere and remember to reassign it.
 
-##### GameObjectExtensions
+## GameObjectExtensions
 *   Extensions for getting if a gameObject is a prefab directly and other helpful stuff
 
-##### StringExtensions
+## StringExtensions
 *   How to strip a SubString
 
-##### HelperMethods
+## HelperMethods
 *   Class containing methods for doing SmoothStep with different Vector-types, as well as other helpful stuff.
 
-##### Editor Scene Hierarchy Traversal - Scene Traversal API
+## Editor Scene Hierarchy Traversal - Scene Traversal API
 
 Really helpful functions and sorters for traversing the scene hierarchy. I’ve added some extra sorters for:
 
@@ -717,12 +816,13 @@ Really helpful functions and sorters for traversing the scene hierarchy. I’ve 
 *   **Source:** [https://github.com/Real-Serious-Games/Unity-Scene-Traversal-Examples](https://github.com/Real-Serious-Games/Unity-Scene-Traversal-Examples)
 *   **Article:** [https://www.what-could-possibly-go-wrong.com/scene-traversal-recipes-for-unity/](https://www.what-could-possibly-go-wrong.com/scene-traversal-recipes-for-unity/)
 
-##### SerializedPropertyExtensions
+## SerializedPropertyExtensions
 *   Extension class for SerializedProperties
 *   See also: [http://answers.unity3d.com/questions/627090/convert-serializedproperty-to-custom-class.html](http://answers.unity3d.com/questions/627090/convert-serializedproperty-to-custom-class.html)
 
+---
 
-## UI Elements
+# UI Elements
 
 - UIElements in Unity 2019.1 - [Quick Rundown of UI Elements](https://youtu.be/GSRVI1HqlF4)
 - Customize the Unity Editor with UIElements! - [Short Tutorial / Showcase](https://youtu.be/CZ39btQ0XlE)
