@@ -27,7 +27,7 @@ namespace Paalo.UnityMiscTools.Examples
 		SerializedObject serializedEditorWindowObject;
 
 		//This array can be of any type that derives from UnityEngine.Object (eg. GameObject, AnimationClip, etc)
-		[SerializeField] AudioClip[] arrayObjects = new AudioClip[0];
+		[SerializeField] Sprite[] arrayObjects = new Sprite[0];
 
 		private void OnEnable()
 		{
@@ -54,8 +54,8 @@ namespace Paalo.UnityMiscTools.Examples
 			EditorGUILayout.LabelField("Lambda Expression-method:", EditorStyles.boldLabel);
 
 			//Using a Lambda Expression for the Callback
-			PaaloEditorHelper.DrawDragAndDropArea<AudioClip>(
-				new DragAndDropAreaInfo("AudioClips"),
+			PaaloEditorHelper.DrawDragAndDropArea<Sprite>(
+				new DragAndDropAreaInfo($"{arrayObjects.GetType().Name}s"),
 				draggedObjects =>
 				{
 					Debug.Log($"Dragged Objects Length: {draggedObjects.Length}");
@@ -72,8 +72,8 @@ namespace Paalo.UnityMiscTools.Examples
 			EditorGUILayout.LabelField("Normal Callback-method:", EditorStyles.boldLabel);
 
 			//Using a "proper" function to handle the Callback
-			PaaloEditorHelper.DrawDragAndDropArea<AudioClip>(
-				new DragAndDropAreaInfo("AudioClips"),
+			PaaloEditorHelper.DrawDragAndDropArea<Sprite>(
+				new DragAndDropAreaInfo("Sprites"),
 				OnDragAndDropPerformed_CallbackExample);
 		}
 
@@ -84,7 +84,7 @@ namespace Paalo.UnityMiscTools.Examples
 		/// <param name="draggedObjects"></param>
 		private void OnDragAndDropPerformed_CallbackExample<T>(T[] draggedObjects) where T : UnityEngine.Object
 		{
-			var myObjects = draggedObjects as AudioClip[];
+			var myObjects = draggedObjects as Sprite[];
 
 			Debug.Log("Dragged Object Array Length: " + myObjects.Length);
 			Debug.Log($"Dragged Obj Array Type: {draggedObjects.GetType().FullName}");
