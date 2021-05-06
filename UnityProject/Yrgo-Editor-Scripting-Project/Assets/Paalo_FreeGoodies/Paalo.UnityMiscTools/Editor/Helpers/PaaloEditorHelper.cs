@@ -487,5 +487,28 @@ namespace Paalo.UnityMiscTools.EditorTools
 			}
 			return result;
 		}
+
+		/// <summary>
+		/// Should NOT have a trailing forward slash, else it won't work 
+		/// <para></para>
+		/// eg. "TopFolder/SubFolder" = correct, "TopFolder/SubFolder/" = incorrect
+		/// </summary>
+		/// <param name="filter"></param>
+		/// <param name="folderPath">Should NOT have a trailing forward slash, else it won't work (eg. "TopFolder/SubFolder" = correct, "TopFolder/SubFolder/" = incorrect)</param>
+		/// <returns></returns>
+		private static string[] GetAllFilePathsAtFolder(string filter, string folderPath)
+		{
+			List<string> filePaths = new List<string>();
+
+			// search for a ScriptObject called CatchphraseCategoryData inside the PhraseDataFolder
+			var guids = AssetDatabase.FindAssets($"{filter}", new string[] { folderPath });
+			foreach (string guid in guids)
+			{
+				string path = AssetDatabase.GUIDToAssetPath(guid);
+				filePaths.Add(path);
+			}
+
+			return filePaths.ToArray();
+		}
 	}
 }
