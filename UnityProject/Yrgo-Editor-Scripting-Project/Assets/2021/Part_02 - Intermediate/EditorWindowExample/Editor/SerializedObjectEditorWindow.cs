@@ -86,4 +86,11 @@ public class SerializedObjectEditorWindow : EditorWindow
 		// Bear in mind that the GUI may not reflect some changes until the mouse hovers over the window tho.
 		windowSerializedObject.ApplyModifiedProperties();
 	}
+
+	private void OnInspectorUpdate()
+	{
+		// This makes the UI update regardless if the mouse hovers over the window (which triggers OnGUI() ) or not.
+		// So this makes the Window feel more responsive, especially if you're doing Undo / Redo with a SerializedObject Editor Window, like this one.
+		this.Repaint();
+	}
 }
