@@ -1,3 +1,6 @@
+// Original script made by Linus Jonsson, GP20, 2021
+// Edited and cleaned up by Pablo Sorribes Bernhard, 2022
+
 using UnityEditor;
 using UnityEngine;
 using SettingsOverviewWindowExample.Data;
@@ -7,34 +10,34 @@ namespace SettingsOverviewWindowExample.Editor
 {
 	public class SettingsOverviewWindow : EditorWindow
 	{
+		/// <summary>
+		/// Used to get the titleContent for the Window Title in the GUI-code
+		/// </summary>
+		private static SettingsOverviewWindow window;
+
 		[MenuItem("YRGO/Part 05/Settings Overview Window")]
 		private static void ShowWindow()
 		{
 			window = GetWindow<SettingsOverviewWindow>();
-			window.titleContent = new GUIContent("SettingsOverview");
+			window.titleContent = new GUIContent("Settings Overview Window");
 			window.Show();
 		}
 
-		private static SettingsOverviewWindow window;
-
 		private readonly string[] _toolbarNames = {
-			"BaseSettings",
 			"PlayerStats",
-			"EnemyStats"
+			"EnemyStats",
+			"OtherStatsArray"
 		};
 		private int _selectedToolbar = 0;
 
 
-		public SettingsOverviewWindowExample.Data.PlayerStats playerStats;
-		public SettingsOverviewWindowExample.Data.EnemyStats enemyStats;
-		public SettingsOverviewWindowExample.Data.OtherStats[] otherStatsArray;
+		private SettingsOverviewWindowExample.Data.PlayerStats playerStats;
+		private SettingsOverviewWindowExample.Data.EnemyStats enemyStats;
+		private SettingsOverviewWindowExample.Data.OtherStats[] otherStatsArray;
 
-		public UnityEditor.Editor[] editors;
+		private UnityEditor.Editor[] editorsToDraw;
 
-		//public SettingsOverviewWindowExample.Runtime.PlayerController playerController;
-
-		public Vector2 scrollPosition;
-		public bool liveUpdate;
+		private Vector2 scrollPosition;
 
 		private bool _playmodeHasInitialized;
 		private int _undoBeforePlaymodeReference;
@@ -45,24 +48,10 @@ namespace SettingsOverviewWindowExample.Editor
 			LoadAssets();
 		}
 
-		private void OnGUI()
+		private void OnDestroy()
 		{
-			if (Application.isPlaying && !_playmodeHasInitialized)
-				PlayModeInit();
-
-			if (Application.isPlaying && liveUpdate)
-				UpdateStats();
-
-			scrollPosition = EditorGUILayout.BeginScrollView(scrollPosition, false, false);
-
-			GUILayout.BeginHorizontal();
-			_selectedToolbar = GUILayout.Toolbar(_selectedToolbar, _toolbarNames);
-			GUILayout.EndHorizontal();
-
-			SetEditorsBasedOnToolbar();
-			GUI_DrawWindow();
-
-			EditorGUILayout.EndScrollView();
+			// Avoid getting multiple callbacks if the window is closed and reopened several times
+			Application.quitting -= OnQuitting;
 		}
 
 		private void LoadAssets()
@@ -70,9 +59,10 @@ namespace SettingsOverviewWindowExample.Editor
 			playerStats = Resources.Load<PlayerStats>("SettingsOverview/Player/PlayerStats");
 			enemyStats = Resources.Load<EnemyStats>("SettingsOverview/Enemy/EnemyStats");
 
+			// How to search the entire "Assets"-folder after a specific type of asset, and load that one instead:
 			string searchPath = "Assets";
 			var filePaths = GetAllFilePathsAtFolder("t:OtherStats", searchPath);
-		
+
 			List<OtherStats> otherStatsList = new List<OtherStats>();
 			foreach (var path in filePaths)
 			{
@@ -81,17 +71,18 @@ namespace SettingsOverviewWindowExample.Editor
 			}
 			otherStatsArray = otherStatsList.ToArray();
 
-			System.Text.StringBuilder builder = new System.Text.StringBuilder();
-			builder.AppendLine($"SearchPath: {searchPath}");
-
-			builder.AppendLine("Filepaths:");
-			foreach (var path in filePaths)
-			{
-				builder.AppendLine(path);
-				builder.AppendLine();
-			}
-
-			Debug.Log(builder.ToString());
+			// Debugging the files we got from the search:
+			//System.Text.StringBuilder builder = new System.Text.StringBuilder();
+			//builder.AppendLine($"SearchPath: {searchPath}");
+			//
+			//builder.AppendLine("Filepaths:");
+			//foreach (var path in filePaths)
+			//{
+			//	builder.AppendLine(path);
+			//	builder.AppendLine();
+			//}
+			//
+			//Debug.Log(builder.ToString());
 		}
 
 		/// <summary>
@@ -117,45 +108,37 @@ namespace SettingsOverviewWindowExample.Editor
 			return filePaths.ToArray();
 		}
 
-		private void PlayModeInit()
+		private void OnGUI()
 		{
-			//if (playerController == null)
-			//	playerController = GameObject.FindWithTag("Player").GetComponent<SettingsOverviewWindowExample.Runtime.PlayerController>();
+			if (Application.isPlaying && !_playmodeHasInitialized)
+				PlayModeInit();
 
-			_undoBeforePlaymodeReference = Undo.GetCurrentGroup();
-			_playmodeHasInitialized = true;
+			GUI_DrawWindow();
 		}
 
-		private void UpdateStats()
+		private void PlayModeInit()
 		{
-			//if (playerController == null)
-			//	playerController = GameObject.FindWithTag("Player").GetComponent<PlayerController>();
-
-			//playerController.UpdateStatsFromEditorWindow();
-
-			//var enemies = FindObjectsOfType<EnemyController>(false);
-			//foreach (var enemy in enemies)
-			//	enemy.SetStatsFromEditorWindow();
+			_playmodeHasInitialized = true;
+			_undoBeforePlaymodeReference = Undo.GetCurrentGroup();
 		}
 
 		private void SetEditorsBasedOnToolbar()
 		{
-			editors = _selectedToolbar switch
+			editorsToDraw = _selectedToolbar switch
 			{
 				0 => new[]
 				{
 					UnityEditor.Editor.CreateEditor(playerStats),
-					UnityEditor.Editor.CreateEditor(enemyStats),
 				},
 
 				1 => new[]
 				{
-					UnityEditor.Editor.CreateEditor(playerStats),
+					UnityEditor.Editor.CreateEditor(enemyStats),
 				},
 
-				2 =>  GetOtherStatsEditors(),
+				2 => GetOtherStatsEditors(),
 
-				_ => editors
+				_ => editorsToDraw
 			};
 		}
 
@@ -175,21 +158,40 @@ namespace SettingsOverviewWindowExample.Editor
 		{
 			GUILayout.BeginVertical();
 
+			// Draw the Window Title at the top of the script
 			EditorGUILayout.Space(6);
-			liveUpdate = EditorGUILayout.Toggle("Update Changes Live", liveUpdate);
+			var windowTitleStyle = new GUIStyle(GUI.skin.label) {
+				fontSize = 18,
+				clipping = TextClipping.Overflow,
+				fontStyle = FontStyle.Bold
+			};
+			EditorGUILayout.LabelField($"{window.titleContent}", windowTitleStyle);
 			EditorGUILayout.Space(6);
 
-			var style = new GUIStyle(GUI.skin.label) { fontSize = 14 };
-			foreach (var editor in editors)
+			// Draw toolbar and update which tab should be active
+			GUILayout.BeginHorizontal();
+			_selectedToolbar = GUILayout.Toolbar(_selectedToolbar, _toolbarNames);
+			GUILayout.EndHorizontal();
+			SetEditorsBasedOnToolbar();
+
+			// Make the window Scrollable, if enough elements are displayed.
+			scrollPosition = EditorGUILayout.BeginScrollView(scrollPosition, false, false);
+
+			// Draw the current tab's inspectors
+			var objectHeaderStyle = new GUIStyle(GUI.skin.label) { fontSize = 14 };
+			foreach (var editor in editorsToDraw)
 			{
-				EditorGUILayout.LabelField($"-- {editor.target.name} --", style);
+				EditorGUILayout.LabelField($"-- {editor.target.name} --", objectHeaderStyle);
 				EditorGUILayout.Space(2);
 
 				// HERE we draw the default inspector for the object!
-				editor.OnInspectorGUI();	
+				editor.OnInspectorGUI();
 
 				EditorGUILayout.Space(15);
 			}
+
+			// Tell Unity to end the Scrollbar here
+			EditorGUILayout.EndScrollView();
 
 			GUILayout.EndVertical();
 		}
