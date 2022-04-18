@@ -12,4 +12,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2454f1171377ead43a420cc861cf4719, type: 3}
   m_Name: OtherStats_01
   m_EditorClassIdentifier: 
-  myOtherStatsModifierInt: 0
+  myOtherStatsModifierInt: 1
