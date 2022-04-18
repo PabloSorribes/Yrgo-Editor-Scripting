@@ -1,5 +1,5 @@
 // Original script made by Linus Jonsson, GP20, 2021
-// Edited and cleaned up by Pablo Sorribes Bernhard, 2022
+// Edited and cleaned up by Pablo Sorribes Bernhard, 2022-04-19
 
 using UnityEditor;
 using UnityEngine;
