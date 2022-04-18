@@ -1,6 +1,7 @@
 using UnityEditor;
 using UnityEngine;
 using SettingsOverviewWindowExample.Data;
+using System.Collections.Generic;
 
 namespace SettingsOverviewWindowExample.Editor
 {
@@ -16,18 +17,21 @@ namespace SettingsOverviewWindowExample.Editor
 
 		private static SettingsOverviewWindow window;
 
-		private readonly string[] _toolbarNames = { "BaseSettings", "PlayerStats", "EnemyStats" };
+		private readonly string[] _toolbarNames = {
+			"BaseSettings",
+			"PlayerStats",
+			"EnemyStats"
+		};
 		private int _selectedToolbar = 0;
 
 
 		public SettingsOverviewWindowExample.Data.PlayerStats playerStats;
 		public SettingsOverviewWindowExample.Data.EnemyStats enemyStats;
-		//public PlayerElementalStats[] playerElementalStats;
-		//public EnemyElementalStats[] enemyElementalStats;
+		public SettingsOverviewWindowExample.Data.OtherStats[] otherStatsArray;
 
 		public UnityEditor.Editor[] editors;
 
-		public SettingsOverviewWindowExample.Runtime.PlayerController playerController;
+		//public SettingsOverviewWindowExample.Runtime.PlayerController playerController;
 
 		public Vector2 scrollPosition;
 		public bool liveUpdate;
@@ -56,7 +60,7 @@ namespace SettingsOverviewWindowExample.Editor
 			GUILayout.EndHorizontal();
 
 			SetEditorsBasedOnToolbar();
-			DrawWindow();
+			GUI_DrawWindow();
 
 			EditorGUILayout.EndScrollView();
 		}
@@ -66,27 +70,57 @@ namespace SettingsOverviewWindowExample.Editor
 			playerStats = Resources.Load<PlayerStats>("SettingsOverview/Player/PlayerStats");
 			enemyStats = Resources.Load<EnemyStats>("SettingsOverview/Enemy/EnemyStats");
 
-			//playerElementalStats = new[]
-			//{
-			//	Resources.Load<PlayerElementalStats>("PlayerElementalStats/EarthStats"),
-			//	Resources.Load<PlayerElementalStats>("PlayerElementalStats/WindStats"),
-			//	Resources.Load<PlayerElementalStats>("PlayerElementalStats/WaterStats"),
-			//	Resources.Load<PlayerElementalStats>("PlayerElementalStats/FireStats"),
-			//};
+			string searchPath = "Assets";
+			var filePaths = GetAllFilePathsAtFolder("t:OtherStats", searchPath);
+		
+			List<OtherStats> otherStatsList = new List<OtherStats>();
+			foreach (var path in filePaths)
+			{
+				var otherStatAsset = AssetDatabase.LoadAssetAtPath<OtherStats>(path);
+				otherStatsList.Add(otherStatAsset);
+			}
+			otherStatsArray = otherStatsList.ToArray();
 
-			//enemyElementalStats = new[]
-			//{
-			//	Resources.Load<EnemyElementalStats>("EnemyElementalStats/EarthStats"),
-			//	Resources.Load<EnemyElementalStats>("EnemyElementalStats/WindStats"),
-			//	Resources.Load<EnemyElementalStats>("EnemyElementalStats/WaterStats"),
-			//	Resources.Load<EnemyElementalStats>("EnemyElementalStats/FireStats"),
-			//};
+			System.Text.StringBuilder builder = new System.Text.StringBuilder();
+			builder.AppendLine($"SearchPath: {searchPath}");
+
+			builder.AppendLine("Filepaths:");
+			foreach (var path in filePaths)
+			{
+				builder.AppendLine(path);
+				builder.AppendLine();
+			}
+
+			Debug.Log(builder.ToString());
+		}
+
+		/// <summary>
+		/// Should NOT have a trailing forward slash, else it won't work 
+		/// <para></para>
+		/// eg. "TopFolder/SubFolder" = correct, "TopFolder/SubFolder/" = incorrect
+		/// </summary>
+		/// <param name="filter"></param>
+		/// <param name="folderPath">Should NOT have a trailing forward slash, else it won't work (eg. "TopFolder/SubFolder" = correct, "TopFolder/SubFolder/" = incorrect)</param>
+		/// <returns></returns>
+		private static string[] GetAllFilePathsAtFolder(string filter, string folderPath)
+		{
+			List<string> filePaths = new List<string>();
+
+			// search for a ScriptObject called CatchphraseCategoryData inside the PhraseDataFolder
+			var guids = AssetDatabase.FindAssets($"{filter}", new string[] { folderPath });
+			foreach (string guid in guids)
+			{
+				string path = AssetDatabase.GUIDToAssetPath(guid);
+				filePaths.Add(path);
+			}
+
+			return filePaths.ToArray();
 		}
 
 		private void PlayModeInit()
 		{
-			if (playerController == null)
-				playerController = GameObject.FindWithTag("Player").GetComponent<SettingsOverviewWindowExample.Runtime.PlayerController>();
+			//if (playerController == null)
+			//	playerController = GameObject.FindWithTag("Player").GetComponent<SettingsOverviewWindowExample.Runtime.PlayerController>();
 
 			_undoBeforePlaymodeReference = Undo.GetCurrentGroup();
 			_playmodeHasInitialized = true;
@@ -117,26 +151,27 @@ namespace SettingsOverviewWindowExample.Editor
 				1 => new[]
 				{
 					UnityEditor.Editor.CreateEditor(playerStats),
-					//UnityEditor.Editor.CreateEditor(playerElementalStats[0]),
-					//UnityEditor.Editor.CreateEditor(playerElementalStats[1]),
-					//UnityEditor.Editor.CreateEditor(playerElementalStats[2]),
-					//UnityEditor.Editor.CreateEditor(playerElementalStats[3]),
 				},
 
-				2 => new[]
-				{
-					UnityEditor.Editor.CreateEditor(enemyStats),
-					//UnityEditor.Editor.CreateEditor(enemyElementalStats[0]),
-					//UnityEditor.Editor.CreateEditor(enemyElementalStats[1]),
-					//UnityEditor.Editor.CreateEditor(enemyElementalStats[2]),
-					//UnityEditor.Editor.CreateEditor(enemyElementalStats[3]),
-				},
+				2 =>  GetOtherStatsEditors(),
 
 				_ => editors
 			};
 		}
 
-		private void DrawWindow()
+		private UnityEditor.Editor[] GetOtherStatsEditors()
+		{
+			List<UnityEditor.Editor> editors = new List<UnityEditor.Editor>();
+
+			foreach (var statAsset in otherStatsArray)
+			{
+				var statAssetEditor = UnityEditor.Editor.CreateEditor(statAsset);
+				editors.Add(statAssetEditor);
+			}
+			return editors.ToArray();
+		}
+
+		private void GUI_DrawWindow()
 		{
 			GUILayout.BeginVertical();
 
@@ -149,7 +184,10 @@ namespace SettingsOverviewWindowExample.Editor
 			{
 				EditorGUILayout.LabelField($"-- {editor.target.name} --", style);
 				EditorGUILayout.Space(2);
-				editor.OnInspectorGUI();
+
+				// HERE we draw the default inspector for the object!
+				editor.OnInspectorGUI();	
+
 				EditorGUILayout.Space(15);
 			}
 
