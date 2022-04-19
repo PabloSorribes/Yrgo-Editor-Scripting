@@ -56,6 +56,7 @@ namespace SettingsOverviewWindowExample.Editor
 
 		private void LoadAssets()
 		{
+			// Loading assets with a hardcoded path, inside the Resources-folder
 			playerStats = Resources.Load<PlayerStats>("SettingsOverview/Player/PlayerStats");
 			enemyStats = Resources.Load<EnemyStats>("SettingsOverview/Enemy/EnemyStats");
 
