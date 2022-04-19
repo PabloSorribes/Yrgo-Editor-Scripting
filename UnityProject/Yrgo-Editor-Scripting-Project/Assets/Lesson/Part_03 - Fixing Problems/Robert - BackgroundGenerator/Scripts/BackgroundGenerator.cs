@@ -19,16 +19,15 @@ public class BackgroundGenerator : MonoBehaviour
 		Generate();
 	}
 
-	// TODO @Paalo: Add Undo
 	public void Generate()
 	{
 		for (int i = 0; i < backgroundObjects; i++)
 		{
 			var newBG = Instantiate(backgroundPrefab, transform);
 
-#if UNITY_EDITOR
-			UnityEditor.Undo.RegisterCreatedObjectUndo(newBG, "Created obj");
-#endif
+//#if UNITY_EDITOR
+//			UnityEditor.Undo.RegisterCreatedObjectUndo(newBG, "Created obj");
+//#endif
 
 			var spriteRenderer = newBG.GetComponentInChildren<SpriteRenderer>();
 			spriteRenderer.sprite = sprites[Random.Range(0, sprites.Length)];
@@ -52,16 +51,17 @@ public class BackgroundGenerator : MonoBehaviour
 			spriteRenderer.flipY = true;
 	}
 
-	// TODO @Paalo: Add Undo
 	public void Clear()
 	{
 		foreach (Transform child in transform)
 		{
-#if UNITY_EDITOR
-			UnityEditor.Undo.DestroyObjectImmediate(child.gameObject);
-#else
 			DestroyImmediate(child.gameObject);
-#endif
+
+			//#if UNITY_EDITOR
+			//			UnityEditor.Undo.DestroyObjectImmediate(child.gameObject);
+			//#else
+			//			DestroyImmediate(child.gameObject);
+			//#endif
 		}
 		if (transform.childCount > 0)
 		{
