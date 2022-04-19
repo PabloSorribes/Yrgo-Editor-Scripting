@@ -7,7 +7,7 @@ using UnityEngine;
 public class SetRandomRotationForObjects_SerializedObjectVersion : EditorWindow
 {
 	//%&#u translates to "ctrl + alt + shift + r" which has been the keyboard shortcut bound to this window
-	//It can otherwise be found under "Examples/SetRandomRotationForObjects_SerializedObjectVersion" in the regular row of menus
+	//It can otherwise be found under "YRGO/Part 05/SetRandomRotationForObjects_SerializedObjectVersion" in the regular row of menus
 	private const string shortcut = " %&#r";
 	private const string menuPath = "YRGO/Part 05/" + nameof(SetRandomRotationForObjects_SerializedObjectVersion) + shortcut;
 
