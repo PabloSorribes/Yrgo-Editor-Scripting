@@ -62,7 +62,7 @@ namespace SettingsOverviewWindowExample.Editor
 
 			// How to search the entire "Assets"-folder after a specific type of asset, and load that one instead:
 			string searchPath = "Assets";
-			var filePaths = GetAllFilePathsAtFolder("t:OtherStats", searchPath);
+			var filePaths = GetAllFilePathsAtFolder($"t:{nameof(OtherStats)}", searchPath);
 
 			List<OtherStats> otherStatsList = new List<OtherStats>();
 			foreach (var path in filePaths)
