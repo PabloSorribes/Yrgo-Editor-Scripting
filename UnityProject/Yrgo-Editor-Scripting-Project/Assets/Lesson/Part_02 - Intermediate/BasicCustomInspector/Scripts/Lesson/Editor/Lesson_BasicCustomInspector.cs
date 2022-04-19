@@ -1,7 +1,7 @@
 using UnityEditor;
 using UnityEngine;
 
-[CanEditMultipleObjects]
+//[CanEditMultipleObjects]
 [CustomEditor(typeof(Lesson_BasicBehaviour))]
 public class Lesson_BasicCustomInspector : Editor
 {
@@ -12,23 +12,23 @@ public class Lesson_BasicCustomInspector : Editor
 		serializedObject.Update();
 
 		//Optional - draw the default inspector
-		base.OnInspectorGUI();
+		//base.OnInspectorGUI();
 
-		// TODO: Show/hide value depending on bool
-		SerializedProperty boolProp = serializedObject.FindProperty(nameof(Lesson_BasicBehaviour.showField));
+		//// TODO: Show/hide value depending on bool
+		//SerializedProperty boolProp = serializedObject.FindProperty(nameof(Lesson_BasicBehaviour.showField));
 
-		if (boolProp.boolValue)
-		{
-			//Do your editor stuff here:
-			// TODO: Find string property & display it via "EditorGUILayout.PropertyField()"
-			SerializedProperty stringProp = serializedObject.FindProperty(nameof(Lesson_BasicBehaviour.myVariableField));
-			EditorGUILayout.PropertyField(stringProp);
-		}
+		//if (boolProp.boolValue)
+		//{
+		//	//Do your editor stuff here:
+		//	// TODO: Find string property & display it via "EditorGUILayout.PropertyField()"
+		//	SerializedProperty stringProp = serializedObject.FindProperty(nameof(Lesson_BasicBehaviour.myVariableField));
+		//	EditorGUILayout.PropertyField(stringProp);
+		//}
 
-		if (GUILayout.Button("Toggle Bool Value"))
-		{
-			boolProp.boolValue = !boolProp.boolValue;
-		}
+		//if (GUILayout.Button("Toggle Bool Value"))
+		//{
+		//	boolProp.boolValue = !boolProp.boolValue;
+		//}
 
 
 		//Apply the occurred changes with this line (allow automatic undo/redo)
