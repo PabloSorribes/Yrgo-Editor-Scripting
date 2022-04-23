@@ -21,14 +21,19 @@ public class DrawColliderGizmo_Basic : MonoBehaviour
 		//Save the color in a temporary variable to not overwrite changes in the inspector.
 		var color = gizmoBoxColor;
 
-		//Draws the edges of the BoxCollider 
-		Gizmos.color = color;
-		Gizmos.DrawWireCube(transform.position + boxCollider.center, boxCollider.size);
+		// This makes it so that all Gizmo-drawing "originates" from `this.transform`,
+        // So Vector3.zero (for position) will be at `this.transform.position`.
+        // It also ensures that the gizmo will follow the rotation and position of the object.
+        Gizmos.matrix = this.transform.localToWorldMatrix;
 
-		//Draws the sides/insides of the BoxCollider, with a tint to the original color.
-		color.a = alpha;
-		Gizmos.color = color;
-		Gizmos.DrawCube(transform.position + boxCollider.center, boxCollider.size);
+		//Draws the edges of the BoxCollider
+        Gizmos.color = color;
+        Gizmos.DrawWireCube(Vector3.zero, boxCollider.size);
+
+        //Draws the sides/insides of the BoxCollider, with a tint to the original color.
+        color.a = alpha;
+        Gizmos.color = color;
+        Gizmos.DrawCube(Vector3.zero, boxCollider.size);
 	}
 
 
